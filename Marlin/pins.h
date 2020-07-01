@@ -1192,9 +1192,15 @@
 #define HEATER_2_PIN -1
 #define TEMP_2_PIN -1
 
-#define E0_STEP_PIN         42
-#define E0_DIR_PIN          43
-#define E0_ENABLE_PIN       37
+#ifdef E1_REPLACE_E0
+  #define E0_STEP_PIN         49
+  #define E0_DIR_PIN          47
+  #define E0_ENABLE_PIN       48
+#else
+  #define E0_STEP_PIN         42
+  #define E0_DIR_PIN          43
+  #define E0_ENABLE_PIN       37
+#endif
 
 #define E1_STEP_PIN         49
 #define E1_DIR_PIN          47

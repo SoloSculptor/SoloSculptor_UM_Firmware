@@ -3,12 +3,14 @@
 #define CONFIGURATION_H
 
 //linanw added Macros for firmware version string.
-//#define PLUS
+#define PLUS
 //#define MINI
 //#define DUAL_EXTRUSION
 //#define DW_EXTRUDER_GEN1
-//#define NO_AUTO_FAN ".NO_AUTO_FAN"
-#define FIRMWARE_NUMBERS "20170128.1"
+//#define NO_AUTO_FAN
+#define MAX_TEMP_OVERRIDE
+//#define E1_REPLACE_E0
+#define FIRMWARE_NUMBERS "20200522.1"
 
 #ifdef PLUS
   #define PLUS_TEXT ".PLUS"
@@ -35,8 +37,18 @@
 #else
   #define NO_AUTO_FAN_TEXT ""
 #endif // NO_AUTO_FAN
+#ifdef MAX_TEMP_OVERRIDE
+  #define MAX_TEMP_OVERRIDE_TEXT ".MAX_TEMP_275"
+#else
+  #define MAX_TEMP_OVERRIDE_TEXT ""
+#endif // MAX_TEMP_OVERRIDE
+#ifdef E1_REPLACE_E0
+  #define E1_REPLACE_E0_TEXT ".E1_REPLACE_E0"
+#else
+  #define E1_REPLACE_E0_TEXT ""
+#endif // E1_REPLACE_E0
 
-#define FIRMWARE_VERSION FIRMWARE_NUMBERS PLUS_TEXT DUAL_EXTRUSION_TEXT DW_EXTRUDER_GEN1_TEXT NO_AUTO_FAN_TEXT
+#define FIRMWARE_VERSION FIRMWARE_NUMBERS PLUS_TEXT DUAL_EXTRUSION_TEXT DW_EXTRUDER_GEN1_TEXT NO_AUTO_FAN_TEXT MAX_TEMP_OVERRIDE_TEXT E1_REPLACE_E0_TEXT
 //end linanw
 
 // This configuration file contains the basic settings.
@@ -211,9 +223,15 @@
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 275
-#define HEATER_1_MAXTEMP 275
-#define HEATER_2_MAXTEMP 275
+#ifdef MAX_TEMP_OVERRIDE
+  #define HEATER_0_MAXTEMP 290
+  #define HEATER_1_MAXTEMP 290
+  #define HEATER_2_MAXTEMP 290
+#else
+  #define HEATER_0_MAXTEMP 275
+  #define HEATER_1_MAXTEMP 275
+  #define HEATER_2_MAXTEMP 275
+#endif
 #define BED_MAXTEMP 130
 
 //Check if the heater heats up MAX_HEATING_TEMPERATURE_INCREASE within MAX_HEATING_CHECK_MILLIS while the PID was at the maximum.
@@ -384,8 +402,12 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
   #define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
   #define INVERT_E1_DIR true    // for direct drive extruder v9 set to true, for geared extruder set to false
 #else
-  #define INVERT_E0_DIR true   // for direct drive extruder v9 set to true, for geared extruder set to false
-  #define INVERT_E1_DIR false    // for direct drive extruder v9 set to true, for geared extruder set to false
+  #define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+  #ifdef E1_REPLACE_E0
+    #define INVERT_E1_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+  #else
+    #define INVERT_E1_DIR true   // for direct drive extruder v9 set to true, for geared extruder set to false
+  #endif
 #endif
 #define INVERT_E2_DIR true    // for direct drive extruder v9 set to true, for geared extruder set to false
 
